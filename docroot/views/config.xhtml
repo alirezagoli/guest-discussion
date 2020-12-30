@@ -1,0 +1,166 @@
+<?xml version="1.0"?>
+
+<f:view xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ui="http://java.sun.com/jsf/facelets">
+	
+		
+
+	<h:head>
+		<style>
+			.ui-widget-content .ui-state-highlight {
+				 background-image:-moz-linear-gradient(top,      #bfbfbf,        #bfbfbf);
+				 background-image:-webkit-gradient(linear, 0 0, 0 100%, from( #bfbfbf), to( #bfbfbf));
+				 background-image:-webkit-linear-gradient(top,  #bfbfbf,  #bfbfbf);
+				 background-image:-o-linear-gradient(top,  #bfbfbf,  #bfbfbf);
+				 background-image:linear-gradient(to bottom,  #bfbfbf,  #bfbfbf);
+				 
+				}
+		</style>
+	</h:head>
+	<h:body>
+		<p:tabView id="configtab"
+			dir="#{configB.currentLocale eq 'en' ? 'ltr' : 'rtl'}">
+			<p:tab title="#{i18n['Select-Topic']}">
+				<p:panel header="#{i18n['Discussion-Topic']}">
+					<h:form id="addtitleform">
+
+						<h:panelGrid columns="2" cellpadding="5" >
+							<h:outputLabel for="newtitle" value="#{i18n['New-Topic']}:" 
+								 />
+							<p:inputText id="newtitle" value="#{configB.newTitleText}"
+								required="true" 
+								requiredMessage="#{i18n['Please-enter--a-topic-first']}" style="width: 100%;" />
+
+						</h:panelGrid>
+						<p:commandButton value="#{i18n['Add']}" 
+							actionListener="#{configB.addNewTitle}"
+							update=":#{component.namingContainer.parent.namingContainer.clientId}" />
+
+					</h:form>
+
+					<p:separator />
+
+
+					
+					<h:form id="form">
+       
+							<p:messages id="messages2" for="savebutton" closable="true"
+										showSummary="true" showDetail="true" />
+				            <p:dataTable id="titles" value="#{configB.titleList}" var="title"  editable="true"  
+				            			 dir="#{configB.currentLocale eq 'en' ? 'ltr' : 'rtl'}"
+				                         selection="#{configB.selectedTitle}" rowKey="#{title.titleId}" style="overflow-x: scroll;"
+				                         emptyMessage="#{i18n['There-is-no-title']}" >
+				
+				
+				                <p:ajax event="rowEdit" listener="#{configB.onRowEdit}" />
+				                <p:ajax event="rowEditCancel" listener="#{configB.onRowCancel}"  />
+				
+								<p:column selectionMode="single" style="width:1%; text-align:center"/>
+				
+				                <p:column style="width: 88%;" headerText="#{i18n['Titles']}">
+				                    <p:cellEditor>
+				                        <f:facet name="output"><h:outputText value="#{title.titleText}"/></f:facet>
+				                        <f:facet name="input"><p:inputText id="modelInput" value="#{title.titleText}"
+				                                                           style="width:100%"/></f:facet>
+				                    </p:cellEditor>
+				                </p:column>
+				
+				                <p:column style="width:1%">
+				                    <p:rowEditor/>
+				                </p:column>
+				                
+				               <p:column style="width: 10%;"  >
+									<p:commandButton value="#{i18n['Delete']}"
+													onclick="td#{title.titleId}.show()"
+													icon="ui-icon-close" title="Delete">
+
+									</p:commandButton>
+									
+									<p:confirmDialog message="#{i18n['Are-you-sure-about-deleting-this-title']}" header="#{i18n['Deleting-title']}" 
+									severity="alert" widgetVar="td#{title.titleId}" dir="#{configB.currentLocale eq 'en' ? 'ltr' : 'rtl'}">
+        								<p:commandButton value="#{i18n['Yes']}" action="#{configB.deleteTitle}" update=":#{component.namingContainer.clientId}" 
+        								onclick="td#{title.titleId}.hide();" icon="ui-icon-check">
+        											<f:setPropertyActionListener value="#{title}"
+														target="#{configB.selectedTitle}" />
+        								 </p:commandButton>
+        								<p:commandButton value="#{i18n['No']}"  onclick="td#{title.titleId}.hide();" type="button" icon="ui-icon-close" />
+   									</p:confirmDialog>
+									
+								</p:column>
+				                
+				              	<f:facet name="footer">
+            						<p:commandButton   value="#{i18n['Choose']}"
+														actionListener="#{configB.selectTitle}" update=":#{component.namingContainer.parent.namingContainer.parent.namingContainer.clientId}"  />
+      						 	 </f:facet>
+				                
+				            </p:dataTable>
+    				</h:form>
+					
+					
+					
+				</p:panel>
+			</p:tab>
+
+			<p:tab  title="#{i18n['Verify-Comments']}">
+
+				<h:form>
+					<p:dataTable id="unverifiedcomments" var="unVerifiedComment"
+						dir="#{configB.currentLocale eq 'en' ? 'ltr' : 'rtl'}"
+						value="#{configB.unVerifiedCommentList}"
+						style="overflow-x: scroll;"
+						emptyMessage="#{i18n['There-is-no-unverified-comment']}">
+
+						<p:column  style="text-align: center; width: 10%;"  headerText="#{i18n['Guest-Name']}">
+							<a id="#{unVerifiedComment.commentId}">#{unVerifiedComment.guestName}</a>
+						</p:column>
+						
+						<p:column style="text-align: center; width: 10%;"  headerText="#{i18n['Reply-to']}">
+							<a href="##{unVerifiedComment.parentId}">#{unVerifiedComment.parentName}</a>
+						</p:column>
+
+						<p:column  headerText="#{i18n['Comment']}" style="width: 60%;">
+							<h:outputText style="white-space: pre-line;" escape="false"  value="#{unVerifiedComment.commentText}" />
+						</p:column>
+
+						<p:column style="width: 10%;" >
+							<p:commandButton value="#{unVerifiedComment.verified eq false ? i18n['Verify'] : i18n['Unverify']}" 
+								update="unverifiedcomments" action="#{configB.verifyComment}"
+								icon="ui-icon-check" title="Verify">
+								<f:setPropertyActionListener value="#{unVerifiedComment}"
+									target="#{configB.selectedComment}" />
+							</p:commandButton>
+						</p:column>
+						
+						<p:column style="width: 10%;" >
+							<p:commandButton value="#{i18n['Delete']}" onclick="cd#{unVerifiedComment.commentId}.show()"
+								icon="ui-icon-close" title="Delete">
+							</p:commandButton>
+							
+							<p:confirmDialog message="#{i18n['Are-you-sure-about-deleting-this-comment']}" header="#{i18n['Deleting-comment']}" 
+									severity="alert" widgetVar="cd#{unVerifiedComment.commentId}" dir="#{configB.currentLocale eq 'en' ? 'ltr' : 'rtl'}">
+        						<p:commandButton value="#{i18n['Yes']}" action="#{configB.deleteComment}" update="unverifiedcomments" 
+        								onclick="cd#{unVerifiedComment.commentId}.hide();" icon="ui-icon-check">
+								<f:setPropertyActionListener value="#{unVerifiedComment}"
+									target="#{configB.selectedComment}" />
+        						</p:commandButton>
+        						
+        						<p:commandButton value="#{i18n['No']}"  onclick="cd#{unVerifiedComment.commentId}.hide();" type="button" icon="ui-icon-close" />
+   							</p:confirmDialog>
+						</p:column>
+
+					</p:dataTable>
+
+				</h:form>
+
+			</p:tab>
+
+		</p:tabView>
+		
+		
+	</h:body>
+		
+</f:view>

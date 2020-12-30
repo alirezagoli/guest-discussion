@@ -1,0 +1,473 @@
+<?xml version="1.0"?>
+
+<f:view xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:wb="http://whitebyte.info/components">
+	<h:head>
+		<h:outputScript library="primefaces" name="jquery/jquery.js" />
+		<h:outputScript library="primefaces" name="primefaces.js" />
+		<h:outputStylesheet library="css" name="commentbox.css"></h:outputStylesheet>
+		<h:outputScript library="javascript" name="commentbox.js" />
+		<h:outputScript library="javascript" name="jquery.cleditor.icon.js"
+			target="body" />
+		<h:outputScript library="javascript" name="jquery.cleditor.youtube.js"
+			target="body" />
+			
+				<style>
+	.tr-commentbox .avatar {
+	#{commentBoxB.currentLocale eq 'en' ? 'float: left; padding-right: 8px;' : 'float: right; padding-left: 8px;'}
+	height: auto;
+	width: 6%;
+}
+
+.tr-commentbox .comment .body {
+	#{commentBoxB.currentLocale eq 'en' ? 'float: left;' : 'float: right;'}
+}
+
+.tr-commentbox .comment footer menu li {
+
+	#{commentBoxB.currentLocale eq 'en' ? 'float: left;' : 'float: right;'}
+	list-style-type: none;
+	margin: 0 7px 0 0;
+	padding: 1px;
+}
+
+.tr-commentbox .newIndicator {
+	width: 5px;
+	height: 50px;
+	background: #ffc62e;
+	border-radius: 1px;
+	#{commentBoxB.currentLocale eq 'en' ? 'float: left;' : 'float: right;'}
+	margin-right: 5px;
+	display: none;
+}
+
+</style>
+			
+		<script type="text/javascript">
+		  var emailNotificationFlag1=false;
+		  var emailNotificationFlag2=false;
+	      var widgetId1;
+	      var widgetId2;
+	      var onloadCallback = function() {
+	    	  
+	        widgetId1 = grecaptcha.render('recaptcha1', {
+	          'sitekey' : '6Lfaby4UAAAAAGPRPYVpBPVKzQrQNb7wxYVfDhZx',
+	        });
+	        
+	        widgetId2 = grecaptcha.render('recaptcha2', {
+		      'sitekey' : '6Lfaby4UAAAAAGPRPYVpBPVKzQrQNb7wxYVfDhZx',
+		    });
+	      };
+	    </script>
+			
+	</h:head>
+	<h:body>
+
+		<script>
+	//<![CDATA[
+	$(function(){
+		// The images are set here because the el is not evaluated in the external js file..
+		$.cleditor.buttons.youtube.css.background = "URL(/GuestDiscussion-portlet/resources/images/film-youtube.png) 50% 50% no-repeat";
+		initJQueryCLEditorIconPlugin("/GuestDiscussion-portlet/resources/images/editor-smileys/", 12, 60);
+	});
+	//]]>
+	</script>
+	
+		<p:messages id="messages1" for="newcomment" closable="true" autoUpdate="true" showSummary="true" showDetail="true" />
+
+		<h3>
+			<h:outputText dir="#{commentBoxB.currentLocale eq 'en' ? 'ltr' : 'rtl'}" value="#{commentBoxB.discussionTitle}"></h:outputText>
+		</h3>
+		
+		<p:outputPanel styleClass="emptyMessage"
+					rendered="#{commentBoxB.titleId == -1}">#{i18n['empty-title-message']}</p:outputPanel>
+		
+		<p:outputPanel
+			styleClass="comments-#{commentBoxB.id} tr-commentbox comments-wrapper">
+
+			<p:outputPanel rendered="#{commentBoxB.titleId != -1}" id="leaveComment" styleClass="newCommentPanel">
+				<h:form style="overflow: hidden;">
+
+
+
+<!-- 					<div class="avatar">
+						<h:graphicImage
+							rendered="#{not empty commentBoxB.currentUserAvatarUrl}"
+							value="#{commentBoxB.currentUserAvatarUrl}" />
+					</div> -->
+					
+					
+			
+					
+					
+					
+
+					<div style="#{commentBoxB.currentLocale eq 'en' ? 'float: left; width: 72%;' : 'float: right; width: 72%;'}">
+						<a class="username">#{commentBoxB.currentUserUsername}</a>
+
+						<p:editor id="editor" maxlength="8000"
+							styleClass="my_editor comment_editor comment_editor-height-hack"
+							value="#{commentBoxB.new_comment_editor_text}"
+							controls="bold italic underline strikethrough  | color | alignleft | center | alignright | link unlink | undo | redo"
+							height="120" widgetVar="editor" />
+							
+							
+					<h:panelGrid columns="2" cellpadding="5" styleClass="comment_editorButtons noBorders" style="margin-top:3px;display: none;">
+					
+						<h:outputLabel for="guestname"
+							value="#{i18n['commentbox.guest.name']}:" />
+						<p:inputText id="guestname" value="#{commentBoxB.guestName}"
+							style="width: 80%;" />
+							
+						    	
+					</h:panelGrid>
+					
+					
+					
+					<h:panelGrid columns="4" cellpadding="5" styleClass="comment_editorButtons noBorders" style="margin-top:3px;display: none;">
+					
+						<p:selectBooleanCheckbox onchange="if(emailNotificationFlag1==false){document.getElementsByClassName('myemail1')[0].style.display = 'block';
+						document.getElementsByClassName('myemail1')[1].style.display = 'block'; emailNotificationFlag1=true;} else{
+						document.getElementsByClassName('myemail1')[0].style.display = 'none';
+						document.getElementsByClassName('myemail1')[1].style.display = 'none'; emailNotificationFlag1=false;}"
+						 value="#{commentBoxB.guestEmailNotification}" />
+						<h:outputText value="#{i18n['inform-by-email']}" />	
+						
+						
+						<h:panelGroup id="help1">
+    						<p:graphicImage width="20" height="20"  value="../resources/images/icon-help-circled-128.png"/>
+						</h:panelGroup>
+						<p:tooltip id="toolTipFade1" for="help1" value="#{i18n['inform-by-email-help']}"/>
+						
+					</h:panelGrid>	
+					
+					
+					
+					<h:panelGrid columns="2" cellpadding="5" styleClass="comment_editorButtons noBorders" style="margin-top:3px;display: none;">
+					
+
+						<h:outputLabel for="email1"
+							value="#{i18n['commentbox.guest.email']}:" style="display:none;" styleClass="myemail1" />
+						<p:inputText id="email1" value="#{commentBoxB.guestEmailAddress}"
+						    style="width: 80%; direction: ltr; display:none;" styleClass="myemail1"/>
+						    	
+					</h:panelGrid>
+							
+		
+
+						<p:panelGrid styleClass="comment_editorButtons noBorders" 
+							style="margin-top:3px;display: none;">
+							
+							<p:row>
+	 							<p:column colspan="2" style="width: 80%; #{not commentBoxB.administratorFeatures ? '' : 'display: none;'}">
+									<div id="recaptcha1" class="g-recaptcha"></div>
+								</p:column>
+							</p:row>
+						
+							
+							<p:row>
+								<p:column colspan="3">
+								
+									<p:commandButton id="submitButton" styleClass="submitButton"
+										widgetVar="submitButtonVar"
+										value="#{i18n['commentbox.editor.save']}" icon="ui-icon-disk"
+										update=":#{component.namingContainer.parent.namingContainer.clientId}:innerWrapper"
+										onclick="submitButtonVar.disable();$('.ui-button-text', this).html('Submitting...');#{commentBoxB.id}_commentboxWrapper.initDiffNodes();"
+										oncomplete="if(typeof widgetId1 !== 'undefined'){grecaptcha.reset(widgetId1);}submitButtonVar.enable();$(#{commentBoxB.id}_commentboxWrapper.comment_id + ' .newCommentPanel .submitButton .ui-button-text').html('#{i18n['commentbox.editor.save']}');editor.clear();#{commentBoxB.id}_commentboxWrapper.indicateNewNodes();#{commentBoxB.id}_commentboxWrapper.reShowEditors();#{commentBoxB.id}_commentboxWrapper.showNewRepliesText();"
+										actionListener="#{commentBoxB.createComment}" />
+		
+		
+									<p:commandButton rendered="#{commentBoxB.administratorFeatures}"
+										value="#{i18n['commentbox.editor.savedraft']}"
+										icon="ui-icon-pencil" actionListener="#{commentBoxB.saveNewCommentDraft}" />
+		
+									<p:commandButton id="clearButton" type="button"
+										value="#{i18n['commentbox.editor.clear']}"
+										onclick="editor.clear()" icon="ui-icon-close" />
+										
+								</p:column>
+								
+							</p:row>
+							
+						</p:panelGrid>
+					</div>
+				</h:form>
+				<p:separator style="margin: 14px 0 4px 0 !important;" />
+			</p:outputPanel>
+
+			<p:outputPanel id="innerWrapper">
+
+				<p:outputPanel styleClass="emptyMessage"
+					rendered="#{(empty commentBoxB.comments) and (commentBoxB.titleId ne -1)}">#{i18n['commentbox.comments.empty']}</p:outputPanel>
+					
+
+				<span class="hiddenNewComments" style="display: none;">0</span>
+
+
+
+				<p:outputPanel styleClass="comments">
+					<p:tree value="#{commentBoxB.tree}" var="wrapper" id="tree" dir="#{commentBoxB.currentLocale eq 'en' ? 'ltr' : 'rtl'}"
+						widgetVar="treeVar" styleClass="commentTree" cache="false"
+						dynamic="true">
+						<p:treeNode
+							styleClass="treenode-#{wrapper.right.id} #{wrapper.left ? 'treenode-dummy' : 'treenode-unique-id-'.concat(wrapper.right.id)}">
+							<p:outputPanel rendered="#{not wrapper.left}">
+								<h:form id="commentForm">
+									<div class="comment comment-#{wrapper.right.id}"
+										data-commentid="#{wrapper.right.id}">
+										<div class="newIndicator"></div>
+										
+				<!-- 						<div class="avatar">
+											<h:graphicImage id="uploadedImage"
+												value="#{commentBoxB.currentUserAvatarUrl}" />
+										</div> -->
+										
+										<div class="body">
+
+											<header>
+
+												<a href="#comment#{wrapper.right.parent.id eq -1 ? '' : wrapper.right.parent.id}" id="comment#{wrapper.right.id}" class="username">#{wrapper.right.guestName}</a> <span
+													class="bullet">•</span> <span> <p:outputPanel
+														styleClass="info">
+														<h:outputText dir="#{commentBoxB.currentLocale eq 'en' ? 'ltr' : 'rtl'}" value="#{wrapper.right.modification_time}">
+															<f:converter
+																converterId="ir.ac.iut.sccportal.guestdiscussion.ConditionalPrettyTimeConveter" />
+														</h:outputText>
+													</p:outputPanel>
+												</span>
+
+												<p:outputPanel id="comment-likecount">
+													<span class="bullet">•</span>
+													<span class="info">#{i18n['commentbox.comments.comment.likecount']}:
+														#{wrapper.right.likecount}</span>
+												</p:outputPanel>
+												
+												<p:outputPanel id="comment-dislikecount">
+													<span class="bullet">•</span>
+													<span class="info">#{i18n['commentbox.comments.comment.dislikecount']}:
+														#{wrapper.right.dislikeCount}</span>
+												</p:outputPanel>
+												
+											</header>
+
+											<div class="comment-text" style="overflow-x: auto;">
+												<h:outputText style="white-space: pre-line"  dir="#{commentBoxB.currentLocale eq 'en' ? 'ltr' : 'rtl'}"  value="#{wrapper.right.comment_text}"
+													escape="false" />
+											</div>
+
+											<div class="commentEditorDiv" />
+
+											<footer style="overflow: hidden;">
+												<menu>
+
+													<p:outputPanel>
+														<li class="bullet">•</li>
+														<li class="action lockondelete"><p:commandLink
+																value="#{i18n['commentbox.comments.comment.like']}"
+																update="comment-likecount"
+																onclick="$(this).addClass('clickedLink')"
+																actionListener="#{commentBoxB.likeComment(wrapper.right)}" 
+																style="color: #00b300;" />
+														</li>
+													</p:outputPanel>
+													
+													<p:outputPanel>
+														<li class="bullet">•</li>
+														<li class="action lockondelete"><p:commandLink
+																value="#{i18n['commentbox.comments.comment.dislike']}"
+																update="comment-dislikecount"
+																onclick="$(this).addClass('clickedLink')"
+																actionListener="#{commentBoxB.dislikeComment(wrapper.right)}"
+																 style="color: #e60000;" />
+														</li>
+													</p:outputPanel>
+
+													<p:outputPanel>
+														<li class="bullet">•</li>
+														<li class="action lockondelete"><a style="color: #ac7339;"
+															href="#bottom" rel="nofollow"
+															onclick="#{commentBoxB.id}_commentboxWrapper.saveCurrentAnswerComment(#{wrapper.right.id});#{commentBoxB.id}_commentboxWrapper.showAnswerEditor();">#{i18n['commentbox.comments.comment.reply']}</a>
+														</li>
+													</p:outputPanel>
+
+													<p:outputPanel
+														styleClass="updateAnswersPanel updateAnswersPanel-#{wrapper.right.id}"
+														style="display: none;">
+														<li class="bullet">•</li>
+														<li class="action"><a href="javascript:void(0)"
+															rel="nofollow" class="getReplies"
+															onclick="var commentid = $(this).closest('div.comment').attr('data-commentid');$(#{commentBoxB.id}_commentboxWrapper.comment_id + ' .rcGetAnswersForm').find('[name=\'currentAnswerComment\']').val(commentid);rcGetAnswers();#{commentBoxB.id}_commentboxWrapper.updateNodes(treeVar, $(this).closest('.ui-treenode'));$(this).closest('.updateAnswersPanel').css('display', 'none'); delete #{commentBoxB.id}_commentboxWrapper.newAnswers[commentid];">Show
+																# new replies</a></li>
+													</p:outputPanel>
+
+													<p:outputPanel styleClass="typingUsers"
+														style="display: none;">
+														<li class="bullet">•</li>
+														<li class="action"><span class="hiddenUsersTyping"
+															style="display: none;">{}</span> <a># Typing User</a></li>
+													</p:outputPanel>
+												</menu>
+											</footer>
+										</div>
+									</div>
+								</h:form>
+							</p:outputPanel>
+
+							<p:outputPanel rendered="#{wrapper.left}">
+								<div style="margin-top: 9px;" class="commentAnswerDivWrapper">
+									<div class="avatar">
+										<h:graphicImage
+											rendered="#{not empty commentBoxB.currentUserAvatarUrl}"
+											value="#{commentBoxB.currentUserAvatarUrl}" />
+									</div>
+
+									<div class="commentEditorDivAnswer"></div>
+								</div>
+							</p:outputPanel>
+
+						</p:treeNode>
+					</p:tree>
+				</p:outputPanel>
+
+
+
+				<p:outputPanel>
+					<div style="height: 0px;" class="MycommentAnswerDivWrapper">
+
+						<div class="commentEditorDivAnswer"></div>
+					</div>
+				</p:outputPanel>
+
+				
+			</p:outputPanel>
+
+			<p:separator style="margin: 14px 0 4px 0 !important;" />
+
+			<div id="bottom"></div>
+			
+			<p:messages id="messages2" for="newanswer" closable="true" autoUpdate="true" showSummary="true" showDetail="true" />
+				
+			<h:form id="answerEditorForm" styleClass="answerEditorForm"
+				style="height: 0px; overflow: hidden; width:72%;">
+
+	
+
+
+				
+				
+
+				<p:editor id="inlineEditor" maxlength="8000"
+					styleClass="my_editor commentseditor inlineEditor answerEditor"
+					value="#{commentBoxB.answer_comment_editor_text}"
+					controls="bold italic underline strikethrough  | color | alignleft | center | alignright | link unlink | undo | redo"
+					height="120" widgetVar="answerEditorVar" />
+					
+				<h:panelGrid columns="2" cellpadding="5">
+				
+					<h:outputLabel for="guestname"
+						value="#{i18n['commentbox.guest.name']}:" />
+					<p:inputText id="guestname" value="#{commentBoxB.guestName}"
+						style="width: 80%;" />
+						
+				</h:panelGrid>
+				
+				<h:panelGrid columns="4" cellpadding="5">
+					
+					<p:selectBooleanCheckbox onchange="if(emailNotificationFlag2==false){document.getElementsByClassName('myemail2')[0].style.display = 'block';
+						document.getElementsByClassName('myemail2')[1].style.display = 'block'; emailNotificationFlag2=true;} else{
+						document.getElementsByClassName('myemail2')[0].style.display = 'none';
+						document.getElementsByClassName('myemail2')[1].style.display = 'none'; emailNotificationFlag2=false;}"
+						  value="#{commentBoxB.guestEmailNotification}" />
+					<h:outputText value="#{i18n['inform-by-email']}" />
+					
+					<h:panelGroup id="help2">
+    					<p:graphicImage width="20" height="20"  value="../resources/images/icon-help-circled-128.png"/>
+					</h:panelGroup>
+					<p:tooltip id="toolTipFade2" for="help2" value="#{i18n['inform-by-email-help']}"/>	
+						
+				</h:panelGrid>
+				
+				<h:panelGrid columns="2" cellpadding="5">
+				
+					<h:outputLabel for="email2"
+							value="#{i18n['commentbox.guest.email']}:" style="display: none;" styleClass="myemail2" />
+					<p:inputText id="email2" value="#{commentBoxB.guestEmailAddress}"
+						    style="width: 80%; direction: ltr; display:none;" styleClass="myemail2"/>
+						
+				</h:panelGrid>
+					
+					<h:panelGroup style="#{not commentBoxB.administratorFeatures ? '' : 'display: none;'}">
+					<div id="recaptcha2" class="g-recaptcha" style="margin: 4px;"></div>
+					</h:panelGroup>
+					
+				<p:commandButton id="submitButton" ajax="true"
+					value="#{i18n['commentbox.editor.save']}" icon="ui-icon-disk"
+					update=":#{component.namingContainer.parent.namingContainer.clientId}:innerWrapper"
+					actionListener="#{commentBoxB.answerComment()}"
+					onclick="#{commentBoxB.id}_commentboxWrapper.submitAnswer();#{commentBoxB.id}_commentboxWrapper.initDiffNodes();"
+					oncomplete="if(typeof widgetId2 !== 'undefined'){grecaptcha.reset(widgetId2);}answerEditorVar.clear();#{commentBoxB.id}_commentboxWrapper.reShowEditors();#{commentBoxB.id}_commentboxWrapper.indicateNewNodes();" />
+					
+				<p:commandButton rendered="#{commentBoxB.administratorFeatures}"
+					value="#{i18n['commentbox.editor.savedraft']}"
+					icon="ui-icon-pencil" actionListener="#{commentBoxB.saveAnswerCommentDraft}" />
+					
+				<p:commandButton id="clearButton" type="button"
+					value="#{i18n['commentbox.editor.clear']}"
+					onclick="answerEditorVar.clear();" icon="ui-icon-close" />
+				<p:commandButton id="cancelButton" type="button"
+					value="#{i18n['commentbox.editor.cancel']}"
+					onclick="#{commentBoxB.id}_commentboxWrapper.cancelCreateAnswer();"
+					icon="ui-icon-close" />
+				<input id="currentAnswerComment" type="hidden" value=""
+					name="currentAnswerComment" />
+			</h:form>
+
+			<h:form styleClass="rcUserTypingForm">
+				<p:remoteCommand id="rc" name="rcUserTyping"
+					actionListener="#{commentBoxB.onUserType}"
+					oncomplete="#{commentBoxB.id}_commentboxWrapper.rcUserTyping_callback();" />
+				<input id="currentAnswerComment" type="hidden" value=""
+					name="currentAnswerComment" />
+			</h:form>
+
+			<h:form styleClass="rcGetAnswersForm">
+				<p:remoteCommand id="rc" name="rcGetAnswers"
+					actionListener="#{commentBoxB.fetchNewAnswers()}" />
+				<input id="currentAnswerComment" type="hidden" value=""
+					name="currentAnswerComment" />
+			</h:form>
+
+			<p:socket rendered="#{commentBoxB.enableLiveFeatures}"
+				onMessage="#{commentBoxB.id}_commentboxWrapper.handlePushMessage"
+				channel="/commentboxpush-#{commentBoxB.id}-#{commentBoxB.contextID}"
+				autoConnect="true" widgetVar="pushVar" />
+
+		</p:outputPanel>
+		
+		
+		<script src="https://www.google.com/recaptcha/api.js?onload=onloadCallback&amp;render=explicit&amp;hl=#{commentBoxB.currentLocale}"
+        async="async" defer="defer">
+    	</script>
+		
+		
+		<script type="text/javascript">
+		jQuery(document).ready(function($) {
+		    $(".my_editor").find('iframe').contents().find('body').attr('dir', '#{commentBoxB.currentLocale eq 'en' ? 'ltr' : 'rtl'}');                          
+		});
+</script>
+		
+
+
+		<script type="text/javascript">
+		//<![CDATA[
+			var #{commentBoxB.id}_commentboxWrapper = new commentboxWidget('#{commentBoxB.id}', '', JSON.parse('#{commentBoxB.messageBundleAsJSON}'));
+		//]]>
+		</script>
+
+	</h:body>
+</f:view>

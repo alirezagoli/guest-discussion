@@ -1,0 +1,44 @@
+<?xml version="1.0"?>
+
+<model-hints>
+	<model name="ir.ac.iut.sccportal.guestdiscussion.model.Comment">
+		<field name="commentId" type="long" />
+		<field name="groupId" type="long" />
+		<field name="companyId" type="long" />
+		<field name="modifiedDate" type="Date" />
+		<field name="parentId" type="long" />
+		<field name="parentName" type="String" />
+		<field name="commentText" type="String">
+			<hint name="max-length">10000</hint>
+		</field>
+		<field name="guestName" type="String" />
+		<field name="guestEmailAddress" type="String" />
+		<field name="guestEmailNotification" type="boolean" />
+		<field name="likeCount" type="long" />
+		<field name="dislikeCount" type="long" />
+		<field name="titleId" type="long" />
+		<field name="verified" type="boolean" />
+		<field name="hasAnswer" type="boolean" />
+	</model>
+	<model name="ir.ac.iut.sccportal.guestdiscussion.model.PortletTitle">
+		<field name="portletId" type="String" />
+		<field name="titleId" type="long" />
+	</model>
+	<model name="ir.ac.iut.sccportal.guestdiscussion.model.Title">
+		<field name="titleId" type="long" />
+		<field name="groupId" type="long" />
+		<field name="companyId" type="long" />
+		<field name="userId" type="long" />
+		<field name="userName" type="String" />
+		<field name="createDate" type="Date" />
+		<field name="titleText" type="String">
+			<hint name="max-length">1000</hint>
+		</field>
+		<field name="newCommentDraft" type="String">
+			<hint name="max-length">10000</hint>
+		</field>
+		<field name="answerCommentDraft" type="String">
+			<hint name="max-length">10000</hint>
+		</field>
+	</model>
+</model-hints>

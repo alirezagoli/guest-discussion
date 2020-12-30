@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE service-builder PUBLIC "-//Liferay//DTD Service Builder 6.2.0//EN" "http://www.liferay.com/dtd/liferay-service-builder_6_2_0.dtd">
+<service-builder package-path="ir.ac.iut.sccportal.guestdiscussion">
+	<author>Alireza</author>
+	<namespace>GDP</namespace>
+	<entity name="Comment" local-service="true">
+
+		<!-- PK fields -->
+
+		<column name="commentId" type="long" primary="true" id-type="identity"></column>
+
+		<!-- Group instance -->
+
+		<column name="groupId" type="long"></column>
+
+		<!-- Audit fields -->
+
+		<column name="companyId" type="long"></column>
+		<column name="modifiedDate" type="Date"></column>
+        <column name="parentId" type="long"></column>
+        <column name="parentName" type="String"></column>
+        <column name="commentText" type="String" localized="false"></column>
+        <column name="guestName" type="String" localized="false"></column>
+        <column name="guestEmailAddress" type="String"></column>
+        <column name="guestEmailNotification" type="boolean"></column>
+        <column name="likeCount" type="long"></column>
+        <column name="dislikeCount" type="long"></column>
+        <column name="titleId" type="long"></column>
+        <column name="verified" type="boolean"></column>
+        <column name="hasAnswer" type="boolean"></column>
+        <order>
+            <order-column name="commentId" order-by="desc"></order-column>
+        </order>
+        <finder name="ParentId_TitleId_Verified" return-type="Collection">
+            <finder-column name="parentId"></finder-column>
+            <finder-column name="titleId"></finder-column>
+            <finder-column name="verified"></finder-column>
+        </finder>
+        <finder name="TitleId_Virified" return-type="Collection">
+            <finder-column name="titleId"></finder-column>
+            <finder-column name="verified"></finder-column>
+        </finder>
+        <finder name="TitleId" return-type="Collection">
+            <finder-column name="titleId"></finder-column>
+        </finder>
+	</entity>
+	<entity name="Title" local-service="true">
+
+		<!-- PK fields -->
+
+		<column name="titleId" type="long" primary="true" id-type="identity"></column>
+
+		<!-- Group instance -->
+
+		<column name="groupId" type="long"></column>
+
+		<!-- Audit fields -->
+
+		<column name="companyId" type="long"></column>
+		<column name="userId" type="long"></column>
+		<column name="userName" type="String"></column>
+		<column name="createDate" type="Date"></column>
+        <column name="titleText" type="String" localized="false"></column>
+        <column name="newCommentDraft" type="String"></column>
+        <column name="answerCommentDraft" type="String"></column>
+        <order>
+            <order-column name="titleId" order-by="desc"></order-column>
+        </order>
+        <finder name="CompanyId" return-type="Collection">
+            <finder-column name="companyId"></finder-column>
+        </finder>
+	</entity>
+    <entity name="PortletTitle" local-service="true">
+        <column name="portletId" type="String" primary="true"></column>
+        <column name="titleId" type="long"></column>
+        <finder name="TitleId" return-type="Collection">
+            <finder-column name="titleId"></finder-column>
+        </finder>
+    </entity>
+</service-builder>

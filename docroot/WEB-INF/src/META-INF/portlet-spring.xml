@@ -1,0 +1,13 @@
+<?xml version="1.0"?>
+
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" default-destroy-method="destroy" default-init-method="afterPropertiesSet" xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
+	<bean id="ir.ac.iut.sccportal.guestdiscussion.service.CommentLocalService" class="ir.ac.iut.sccportal.guestdiscussion.service.impl.CommentLocalServiceImpl" />
+	<bean id="ir.ac.iut.sccportal.guestdiscussion.service.CommentService" class="ir.ac.iut.sccportal.guestdiscussion.service.impl.CommentServiceImpl" />
+	<bean id="ir.ac.iut.sccportal.guestdiscussion.service.persistence.CommentPersistence" class="ir.ac.iut.sccportal.guestdiscussion.service.persistence.CommentPersistenceImpl" parent="basePersistence" />
+	<bean id="ir.ac.iut.sccportal.guestdiscussion.service.PortletTitleLocalService" class="ir.ac.iut.sccportal.guestdiscussion.service.impl.PortletTitleLocalServiceImpl" />
+	<bean id="ir.ac.iut.sccportal.guestdiscussion.service.PortletTitleService" class="ir.ac.iut.sccportal.guestdiscussion.service.impl.PortletTitleServiceImpl" />
+	<bean id="ir.ac.iut.sccportal.guestdiscussion.service.persistence.PortletTitlePersistence" class="ir.ac.iut.sccportal.guestdiscussion.service.persistence.PortletTitlePersistenceImpl" parent="basePersistence" />
+	<bean id="ir.ac.iut.sccportal.guestdiscussion.service.TitleLocalService" class="ir.ac.iut.sccportal.guestdiscussion.service.impl.TitleLocalServiceImpl" />
+	<bean id="ir.ac.iut.sccportal.guestdiscussion.service.TitleService" class="ir.ac.iut.sccportal.guestdiscussion.service.impl.TitleServiceImpl" />
+	<bean id="ir.ac.iut.sccportal.guestdiscussion.service.persistence.TitlePersistence" class="ir.ac.iut.sccportal.guestdiscussion.service.persistence.TitlePersistenceImpl" parent="basePersistence" />
+</beans>

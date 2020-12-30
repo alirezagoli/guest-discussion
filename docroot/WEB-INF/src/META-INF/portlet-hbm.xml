@@ -1,0 +1,49 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping default-lazy="false" auto-import="false">
+	<import class="ir.ac.iut.sccportal.guestdiscussion.model.Comment" />
+	<import class="ir.ac.iut.sccportal.guestdiscussion.model.PortletTitle" />
+	<import class="ir.ac.iut.sccportal.guestdiscussion.model.Title" />
+	<class name="ir.ac.iut.sccportal.guestdiscussion.model.impl.CommentImpl" table="GDP_Comment">
+		<cache usage="read-write" />
+		<id name="commentId" type="long">
+			<generator class="identity" />
+		</id>
+		<property name="groupId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
+		<property name="companyId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
+		<property name="modifiedDate" type="org.hibernate.type.TimestampType" />
+		<property name="parentId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
+		<property name="parentName" type="com.liferay.portal.dao.orm.hibernate.StringType" />
+		<property name="commentText" type="com.liferay.portal.dao.orm.hibernate.StringType" />
+		<property name="guestName" type="com.liferay.portal.dao.orm.hibernate.StringType" />
+		<property name="guestEmailAddress" type="com.liferay.portal.dao.orm.hibernate.StringType" />
+		<property name="guestEmailNotification" type="com.liferay.portal.dao.orm.hibernate.BooleanType" />
+		<property name="likeCount" type="com.liferay.portal.dao.orm.hibernate.LongType" />
+		<property name="dislikeCount" type="com.liferay.portal.dao.orm.hibernate.LongType" />
+		<property name="titleId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
+		<property name="verified" type="com.liferay.portal.dao.orm.hibernate.BooleanType" />
+		<property name="hasAnswer" type="com.liferay.portal.dao.orm.hibernate.BooleanType" />
+	</class>
+	<class name="ir.ac.iut.sccportal.guestdiscussion.model.impl.PortletTitleImpl" table="GDP_PortletTitle">
+		<cache usage="read-write" />
+		<id name="portletId" type="java.lang.String">
+			<generator class="assigned" />
+		</id>
+		<property name="titleId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
+	</class>
+	<class name="ir.ac.iut.sccportal.guestdiscussion.model.impl.TitleImpl" table="GDP_Title">
+		<cache usage="read-write" />
+		<id name="titleId" type="long">
+			<generator class="identity" />
+		</id>
+		<property name="groupId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
+		<property name="companyId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
+		<property name="userId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
+		<property name="userName" type="com.liferay.portal.dao.orm.hibernate.StringType" />
+		<property name="createDate" type="org.hibernate.type.TimestampType" />
+		<property name="titleText" type="com.liferay.portal.dao.orm.hibernate.StringType" />
+		<property name="newCommentDraft" type="com.liferay.portal.dao.orm.hibernate.StringType" />
+		<property name="answerCommentDraft" type="com.liferay.portal.dao.orm.hibernate.StringType" />
+	</class>
+</hibernate-mapping>

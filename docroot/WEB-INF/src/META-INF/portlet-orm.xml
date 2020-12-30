@@ -1,0 +1,74 @@
+<?xml version="1.0"?>
+
+<entity-mappings xmlns="http://java.sun.com/xml/ns/persistence/orm" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="1.0" xsi:schemaLocation="http://java.sun.com/xml/ns/persistence/orm http://java.sun.com/xml/ns/persistence/orm_1_0.xsd">
+	<persistence-unit-metadata>
+		<xml-mapping-metadata-complete/>
+		<persistence-unit-defaults>
+			<access>PROPERTY</access>
+		</persistence-unit-defaults>
+	</persistence-unit-metadata>
+	<mapped-superclass class="ir.ac.iut.sccportal.guestdiscussion.model.impl.CommentModelImpl">
+		<attributes>
+			<id name="commentId" />
+			<basic name="groupId" />
+			<basic name="companyId" />
+			<basic name="modifiedDate">
+				<temporal>TIMESTAMP</temporal>
+			</basic>
+			<basic name="parentId" />
+			<basic name="parentName" />
+			<basic name="commentText" />
+			<basic name="guestName" />
+			<basic name="guestEmailAddress" />
+			<basic name="guestEmailNotification" />
+			<basic name="likeCount" />
+			<basic name="dislikeCount" />
+			<basic name="titleId" />
+			<basic name="verified" />
+			<basic name="hasAnswer" />
+			<transient name="modelAttributes" />
+			<transient name="primaryKey" />
+			<transient name="primaryKeyObj" />
+		</attributes>
+	</mapped-superclass>
+	<mapped-superclass class="ir.ac.iut.sccportal.guestdiscussion.model.impl.PortletTitleModelImpl">
+		<attributes>
+			<id name="portletId" />
+			<basic name="titleId" />
+			<transient name="modelAttributes" />
+			<transient name="primaryKey" />
+			<transient name="primaryKeyObj" />
+		</attributes>
+	</mapped-superclass>
+	<mapped-superclass class="ir.ac.iut.sccportal.guestdiscussion.model.impl.TitleModelImpl">
+		<attributes>
+			<id name="titleId" />
+			<basic name="groupId" />
+			<basic name="companyId" />
+			<basic name="userId" />
+			<basic name="userName" />
+			<basic name="createDate">
+				<temporal>TIMESTAMP</temporal>
+			</basic>
+			<basic name="titleText" />
+			<basic name="newCommentDraft" />
+			<basic name="answerCommentDraft" />
+			<transient name="modelAttributes" />
+			<transient name="primaryKey" />
+			<transient name="primaryKeyObj" />
+			<transient name="userUuid" />
+		</attributes>
+	</mapped-superclass>
+	<entity class="ir.ac.iut.sccportal.guestdiscussion.model.impl.CommentImpl" name="Comment">
+		<table name="GDP_Comment" />
+		<attributes />
+	</entity>
+	<entity class="ir.ac.iut.sccportal.guestdiscussion.model.impl.PortletTitleImpl" name="PortletTitle">
+		<table name="GDP_PortletTitle" />
+		<attributes />
+	</entity>
+	<entity class="ir.ac.iut.sccportal.guestdiscussion.model.impl.TitleImpl" name="Title">
+		<table name="GDP_Title" />
+		<attributes />
+	</entity>
+</entity-mappings>
